@@ -5,7 +5,7 @@ import db from '../../../../../utils/db';
 
 const handler = async (req, res) => {
   const session = await getSession({ req });
-  if (!session || (session && !session.user.isAdmin)) {
+  if (!session.user.isAdmin) {
     return res.status(401).send('signIn required');
   }
 
@@ -46,7 +46,6 @@ const deleteHandler = async (req, res) => {
   const customer = await Customer.findById(req.query.id);
   if (customer) {
     await customer.remove();
-    await db.disconnect();
     res.send({ message: 'application deleted successfully' });
   } else {
     await db.disconnect();
