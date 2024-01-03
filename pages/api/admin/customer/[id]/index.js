@@ -5,16 +5,16 @@ import db from '../../../../../utils/db';
 
 const handler = async (req, res) => {
   const session = await getSession({ req });
-  // if (!session || (session && !session.user.isAdmin)) {
-  //   return res.status(401).send('signIn required');
-  // }
+  if (!session || (session && !session.user.isAdmin)) {
+    return res.status(401).send('signIn required');
+  }
 
   const { user } = session;
   if (req.method === 'GET') {
     return getHandler(req, res, user);
   } else if (req.method === 'PUT') {
     return putHandler(req, res, user);
-  } else if (req.method === 'DELETE') {
+  } else if (req.method === 'DELETE', user) {
     return deleteHandler(req, res, user);
   } else {
     return res.status(400).send({ message: 'Method not allowed' });
